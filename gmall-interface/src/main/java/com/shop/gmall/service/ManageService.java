@@ -20,4 +20,7 @@ public interface ManageService {
     List<BaseAttrValue> getAttrValueList(String attrId);
     //根据属性id查询属性
     BaseAttrInfo getAttrInfoByAttrId(String attrId);
+    //根据三级分类id查询spu
+    List<SpuInfo> getSpuInfoList(String catalog3Id);
+
 }

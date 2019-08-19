@@ -27,6 +27,8 @@ public class ManageServiceImpl implements ManageService{
 
     @Autowired
     private BaseAttrValueMapper baseAttrValueMapper;
+    @Autowired
+    private SpuInfoMapper spuInfoMapper;
 
     /**
      * 查询所有一级分类
@@ -131,5 +133,17 @@ public class ManageServiceImpl implements ManageService{
         BaseAttrInfo baseAttrInfo = baseAttrInfoMapper.selectByPrimaryKey(attrId);
         baseAttrInfo.setAttrValueList(this.getAttrValueList(attrId));
         return baseAttrInfo;
+    }
+
+    /**
+     * 根据三级分类id查询spu
+     * @param catalog3Id
+     * @return
+     */
+    @Override
+    public List<SpuInfo> getSpuInfoList(String catalog3Id) {
+        SpuInfo spuInfo = new SpuInfo();
+        spuInfo.setCatalog3Id(catalog3Id);
+        return spuInfoMapper.select(spuInfo);
     }
 }
