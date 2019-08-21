@@ -31,6 +31,7 @@ public class SpuManageServiceImpl implements SpuManageService {
      */
     @Override
     public List<BaseSaleAttr> getBaseSaleAttrList() {
+
         return baseSaleAttrMapper.selectAll();
     }
 
@@ -54,6 +55,8 @@ public class SpuManageServiceImpl implements SpuManageService {
         List<SpuImage> spuImageList = spuInfo.getSpuImageList();
         if (spuImageList!=null && spuImageList.size()>0) {
             for (SpuImage spuImage : spuImageList) {
+                //设置spuid
+                spuImage.setSpuId(spuInfo.getId());
                 spuImageMapper.insertSelective(spuImage);
             }
         }
@@ -77,5 +80,36 @@ public class SpuManageServiceImpl implements SpuManageService {
             }
         }
 
+    }
+
+    /**
+     * 根据spuid查询spu图片
+     * @param spuImage
+     * @return
+     */
+    @Override
+    public List<SpuImage> spuImageList(SpuImage spuImage) {
+        return spuImageMapper.select(spuImage);
+    }
+
+    /**
+     * 根据spuid查询销售属性和属性值
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SpuSaleAttr> spuSaleAttrList(String spuId) {
+        return spuSaleAttrMapper.spuSaleAttrList(spuId);
+    }
+
+    /**
+     * 根据skuid和spuid查询销售属性和属性值
+     * @param skuId
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SpuSaleAttr> getSaleAttrBySku(String skuId, String spuId) {
+        return spuSaleAttrMapper.getSaleAttrBySku(skuId,spuId);
     }
 }

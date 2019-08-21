@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.gmall.manage.mapper.SpuSaleAttrMapper">
+    <resultMap id="selectSpuSaleAttrList" type="com.shop.bean.SpuSaleAttr" autoMapping="true">
+        <id property="id" column="id"></id>
+
+        <collection property="spuSaleAttrValueList" ofType="com.shop.bean.SpuSaleAttrValue" autoMapping="true">
+            <id property="id" column="sale_attr_value_id"></id>
+        </collection>
+
+    </resultMap>
+
+    <select id="spuSaleAttrList" resultMap="selectSpuSaleAttrList">
+
+        SELECT
+          ssa.id ,ssa.spu_id, ssa.sale_attr_name,ssa.sale_attr_id,
+          ssav.id sale_attr_value_id,
+          ssav.sale_attr_value_name
+        FROM spu_sale_attr ssa INNER JOIN spu_sale_attr_value ssav
+        ON ssa.`sale_attr_id` = ssav.`sale_attr_id` AND ssa.`spu_id` = ssav.`spu_id`
+        WHERE ssa.`spu_id` =#{spuId}
+
+    </select>
+    <!--显示商品详情中的销售属性和属性值-->
+    <select id="getSaleAttrBySku" resultMap="selectSpuSaleAttrList">
+        SELECT ssa.id ,ssa.spu_id, ssa.sale_attr_name,ssa.sale_attr_id,
+            ssav.id sale_attr_value_id,
+            ssav.sale_attr_value_name,
+            ssav2.sku_id, IF(ssav2.`sku_id` IS NULL,0,1) isChecked
+        FROM spu_sale_attr ssa
+        INNER JOIN spu_sale_attr_value ssav
+        ON ssa.`sale_attr_id` = ssav.`sale_attr_id`
+        AND ssa.`spu_id` = ssav.`spu_id`
+        LEFT JOIN sku_sale_attr_value ssav2
+        ON ssav2.`sale_attr_id` = ssa.`sale_attr_id`
+        AND ssav2.`sale_attr_value_id` = ssav.`id`
+        AND ssav2.`sku_id` =#{arg0}
+        WHERE ssa.`spu_id` =#{arg1}
+        ORDER BY ssav.sale_attr_id,ssav.id
+    </select>
+</mapper>

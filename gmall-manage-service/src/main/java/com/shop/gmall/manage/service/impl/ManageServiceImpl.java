@@ -70,9 +70,8 @@ public class ManageServiceImpl implements ManageService{
      */
     @Override
     public List<BaseAttrInfo> getAttrInfo(String catalog3Id) {
-        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
-        baseAttrInfo.setCatalog3Id(catalog3Id);
-        return baseAttrInfoMapper.select(baseAttrInfo);
+
+        return baseAttrInfoMapper.getAttrInfo(catalog3Id);
     }
 
     /**
